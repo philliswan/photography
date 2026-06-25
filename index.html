@@ -6,15 +6,15 @@
     <title>phillyy | portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Importing EB Garamond and a few others for the dynamic effect -->
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&family=Playfair+Display:ital@0;1&family=Courier+Prime&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+    <!-- Fonts for the dynamic effect and main theme -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&family=Playfair+Display:ital@0;1&family=Courier+Prime&family=Libre+Baskerville:ital@0;1&family=Lora:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #ffffff;
-            --text-main: #333333; /* Lighter shade of black */
+            --text-main: #444444; /* Lighter shade of black */
             --text-accent: #777777;
             --adobe-red: #fa0f00;
-            --phillis-blue: #afeeee; /* Turquoise blue pastel */
+            --phillis-blue: #005b96; /* Darker blue color */
             --border-color: #eeeeee;
             --nav-font: 'EB Garamond', serif;
         }
@@ -26,7 +26,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'EB Garamond', serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
@@ -56,6 +56,7 @@
             font-size: 1.8rem;
             letter-spacing: -1px;
             font-weight: 500;
+            color: #000;
         }
 
         nav ul {
@@ -68,28 +69,26 @@
             font-family: var(--nav-font);
             font-size: 1.1rem;
             text-transform: lowercase;
-            color: var(--text-main);
+            color: #000;
             text-decoration: none;
             transition: opacity 0.3s;
         }
 
         nav ul li a:hover, nav ul li a.active {
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
         /* Hero Banner Section */
         .hero-banner {
             position: relative;
             width: 100%;
-            height: 60vh;
+            height: 65vh;
             overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
             background: #000;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
 
         .hero-video {
@@ -107,35 +106,47 @@
             position: relative;
             z-index: 2;
             color: white;
-            padding: 0 1rem;
+            text-align: center;
+            width: 100%;
         }
 
-        .captured-by {
-            font-size: 1rem;
-            vertical-align: super;
-            margin-right: 5px;
-            font-weight: 300;
+        /* Title Layout to prevent phillyy from moving */
+        .title-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 1rem;
         }
 
-        #dynamic-title {
+        #dynamic-prefix {
+            font-size: 1.2rem;
+            display: inline-block;
+            text-align: right;
+            min-width: 120px; /* Ensures phillyy stays in place regardless of font width */
+            font-weight: 400;
+        }
+
+        .static-name {
             font-size: 4rem;
             font-weight: 400;
-            transition: font-family 0.1s ease-in-out;
-            display: inline-block;
+            font-family: 'EB Garamond', serif;
         }
 
         .hero-subtitle {
-            margin-top: 1rem;
-            font-size: 1rem;
+            font-size: 1.05rem;
+            font-family: 'Inter', sans-serif;
             font-weight: 300;
             letter-spacing: 0.5px;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .hero-welcome {
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             font-family: var(--nav-font);
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             opacity: 0.9;
         }
 
@@ -144,21 +155,23 @@
         /* Bio Section */
         .bio-section {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            padding-bottom: 6rem;
+            grid-template-columns: 0.8fr 1.2fr; /* Adjusted for portrait image */
+            gap: 5rem;
+            align-items: flex-start;
+            padding-bottom: 8rem;
         }
 
         .bio-image img {
             width: 100%;
-            height: auto;
+            aspect-ratio: 2/3; /* Forces vertical orientation */
+            object-fit: cover;
             display: block;
         }
 
         .bio-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-main);
+            padding-top: 2rem;
         }
 
         .phillis-name {
@@ -171,33 +184,28 @@
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .editorial-header {
-            margin-bottom: 3rem;
-            border-left: 1px solid var(--border-color);
-            padding-left: 1.5rem;
-        }
-
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            margin-bottom: 4rem;
+            margin-top: 2rem;
         }
 
-        .photo-item img { width: 100%; display: block; filter: grayscale(10%); }
+        .photo-item img { width: 100%; display: block; }
         .photo-item.wide { grid-column: span 2; }
 
-        /* Form Styling */
+        /* Bookings */
         .contact-form {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 4rem auto;
             display: grid;
-            gap: 1rem;
+            gap: 1.5rem;
         }
         .contact-form input, .contact-form textarea {
             padding: 1rem;
             border: 1px solid var(--border-color);
             font-family: var(--nav-font);
+            font-size: 1.1rem;
         }
         .contact-form button {
             background: #000;
@@ -206,19 +214,21 @@
             border: none;
             cursor: pointer;
             font-family: var(--nav-font);
+            font-size: 1.1rem;
         }
 
         footer {
             text-align: center;
-            padding: 4rem 0;
-            font-size: 0.8rem;
-            opacity: 0.5;
+            padding: 6rem 0 3rem 0;
+            font-size: 0.9rem;
+            opacity: 0.4;
         }
 
-        @media (max-width: 768px) {
-            .bio-section { grid-template-columns: 1fr; }
-            header { flex-direction: column; gap: 1.5rem; }
-            #dynamic-title { font-size: 2.5rem; }
+        @media (max-width: 850px) {
+            .bio-section { grid-template-columns: 1fr; gap: 2rem; }
+            .title-wrapper { flex-direction: column; align-items: center; gap: 0; }
+            #dynamic-prefix { text-align: center; min-width: auto; }
+            .static-name { font-size: 3rem; }
         }
     </style>
 </head>
@@ -238,17 +248,16 @@
         </header>
 
         <main>
-            <!-- HELLO PAGE (ABOUT ME) -->
+            <!-- HELLO PAGE -->
             <section id="hello" class="page active">
                 <div class="hero-banner">
-                    <!-- Placeholder landscape video/gif -->
                     <video class="hero-video" autoplay muted loop playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-clouds-and-blue-sky-re-flected-in-the-water-15572-large.mp4" type="video/mp4">
+                        <source src="https://assets.mixkit.co/videos/preview/mixkit-wavy-surface-of-water-in-the-sunlight-20224-large.mp4" type="video/mp4">
                     </video>
                     <div class="hero-content">
-                        <div id="dynamic-container">
-                            <span class="captured-by">captured by</span>
-                            <span id="dynamic-title">phillyy</span>
+                        <div class="title-wrapper">
+                            <span id="dynamic-prefix">captured by</span>
+                            <span class="static-name">phillyy</span>
                         </div>
                         <p class="hero-subtitle">
                             freelance photographer, berkeley student, <span class="adobe-text">Adobe</span> creative apprentice – just traversing through the universe
@@ -262,7 +271,8 @@
 
                 <div class="bio-section">
                     <div class="bio-image">
-                        <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=1000&q=80" alt="Portrait of Phillis">
+                        <!-- Vertical Portrait Placeholder -->
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Portrait of Phillis">
                     </div>
                     <div class="bio-text">
                         <p>hi, my name is <span class="phillis-name">phillis</span>! I’m a berkeley chemistry (sadge) student who found a creative outlet through photography. I started with creative portraitshoots and have always enjoyed the directing, planning, and executing of a creative vision with other people.</p>
@@ -274,85 +284,5 @@
 
             <!-- GRADUATION PAGE -->
             <section id="graduation" class="page">
-                <div class="editorial-header">
-                    <h2 style="font-family: var(--nav-font);">Class of 2024</h2>
-                    <p style="color: var(--text-accent);">Capturing the transition from campus life to the real world.</p>
-                </div>
-                <div class="photo-grid">
-                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80" alt="Grad"></div>
-                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1541339907198-e08756eaa539?auto=format&fit=crop&w=800&q=80" alt="Grad"></div>
-                    <div class="photo-item wide"><img src="https://images.unsplash.com/photo-1523050853021-db9e139d82a1?auto=format&fit=crop&w=1200&q=80" alt="Grad"></div>
-                </div>
-            </section>
-
-            <!-- PORTRAITS PAGE -->
-            <section id="portraits" class="page">
-                <div class="editorial-header">
-                    <h2 style="font-family: var(--nav-font);">Identity & Light</h2>
-                    <p style="color: var(--text-accent);">Explorations of the self through shadow and texture.</p>
-                </div>
-                <div class="photo-grid">
-                    <div class="photo-item wide"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=1200&q=80" alt="Portrait"></div>
-                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1502033006962-3bb54bad7112?auto=format&fit=crop&w=800&q=80" alt="Portrait"></div>
-                    <div class="photo-item"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Portrait"></div>
-                </div>
-            </section>
-
-            <!-- BOOKINGS PAGE -->
-            <section id="bookings" class="page">
-                <div style="text-align: center; margin-bottom: 3rem;">
-                    <h2 style="font-family: var(--nav-font);">Reserve a session</h2>
-                    <p>let's bring your creative vision to life.</p>
-                </div>
-                <form class="contact-form">
-                    <input type="text" placeholder="Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <textarea rows="6" placeholder="Describe your vision..." required></textarea>
-                    <button type="submit">Send Request</button>
-                </form>
-            </section>
-        </main>
-
-        <footer>
-            <p>&copy; 2024 phillyy. traversing through the universe.</p>
-        </footer>
-    </div>
-
-    <script>
-        // --- Navigation Logic ---
-        const navLinks = document.querySelectorAll('.nav-link');
-        const pages = document.querySelectorAll('.page');
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = link.getAttribute('data-page');
-                
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-
-                pages.forEach(page => {
-                    page.classList.toggle('active', page.id === target);
-                });
-                window.scrollTo(0,0);
-            });
-        });
-
-        // --- Dynamic Font Logic ---
-        const titleElement = document.getElementById('dynamic-title');
-        const fonts = [
-            "'EB Garamond', serif",
-            "'Playfair Display', serif",
-            "'Courier Prime', monospace",
-            "'Inter', sans-serif",
-            "'Libre Baskerville', serif"
-        ];
-        let fontIndex = 0;
-
-        setInterval(() => {
-            titleElement.style.fontFamily = fonts[fontIndex];
-            fontIndex = (fontIndex + 1) % fonts.length;
-        }, 500); // Changes every 0.5 seconds
-    </script>
-</body>
-</html>
+                <h2 style="font-weight: 400; margin-bottom: 1rem;">Graduation</h2>
+                <p style="color: var(--text-accent); margin-bottom: 2rem;">A celebration of tran
