@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>captured by phillyy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --text-dark: #1a1a1a;
@@ -20,7 +23,7 @@
   }
 
   body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'EB Garamond', Georgia, serif;
     background: #ffffff;
     color: var(--text-dark);
     line-height: 1.6;
@@ -33,6 +36,7 @@
     top: 0;
     z-index: 100;
     display: flex;
+    justify-content: flex-end;
     gap: 2.5rem;
     padding: 1.4rem 2.5rem;
     background: rgba(255, 255, 255, 0.92);
@@ -43,7 +47,7 @@
   nav a {
     text-decoration: none;
     color: var(--text-dark);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     letter-spacing: 0.04em;
     cursor: pointer;
     transition: opacity 0.25s ease;
@@ -89,41 +93,43 @@
     z-index: 2;
     text-align: center;
     padding: 0 1rem;
+    color: #fff;
   }
 
   .title-line {
     display: inline-block;
-    color: #111;
+    color: #fff;
   }
 
   .super {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     vertical-align: super;
     margin-right: 0.3rem;
-    color: #222;
+    color: #fff;
   }
 
   .philly {
     font-size: clamp(3rem, 9vw, 7rem);
     font-weight: 700;
     letter-spacing: -0.02em;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'EB Garamond', Georgia, serif;
   }
 
   .subtitle {
     margin-top: 1.5rem;
-    font-size: 1.05rem;
-    color: #2a2a2a;
+    font-size: 1.15rem;
+    color: #fff;
     letter-spacing: 0.02em;
   }
 
   .subtitle .adobe { color: var(--accent-red); font-weight: 600; }
 
   .welcome {
-    margin-top: 1.8rem;
-    font-size: 0.98rem;
-    color: #333;
-    line-height: 1.8;
+    margin-top: 2.8rem;
+    font-size: 1.1rem;
+    color: #fff;
+    line-height: 1.9;
+    font-style: italic;
   }
 
   /* ---------- INTRO ---------- */
@@ -145,7 +151,7 @@
 
   .intro-text {
     flex: 1;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     color: #2a2a2a;
     line-height: 1.85;
   }
@@ -166,14 +172,14 @@
   }
 
   .gallery-header h1 {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
     font-weight: 600;
     margin-bottom: 1rem;
     letter-spacing: -0.01em;
   }
 
   .gallery-header p {
-    font-size: 1.02rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
     line-height: 1.8;
   }
@@ -204,7 +210,7 @@
   }
 
   .bookings h1 {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
     font-weight: 600;
     margin-bottom: 1.2rem;
   }
@@ -213,12 +219,13 @@
     color: var(--text-muted);
     margin-bottom: 2.5rem;
     line-height: 1.8;
+    font-size: 1.15rem;
   }
 
   .bookings form { display: flex; flex-direction: column; gap: 1.2rem; }
 
   .bookings label {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #555;
@@ -234,7 +241,7 @@
     border: 1px solid var(--border-light);
     border-radius: 2px;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     background: #fafafa;
     transition: border 0.25s ease;
   }
@@ -256,10 +263,11 @@
     color: #fff;
     border: none;
     border-radius: 2px;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     letter-spacing: 0.05em;
     cursor: pointer;
     transition: opacity 0.25s ease;
+    font-family: inherit;
   }
 
   .bookings button:hover { opacity: 0.8; }
@@ -268,14 +276,14 @@
     text-align: center;
     padding: 3rem 1rem;
     color: #aaa;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     border-top: 1px solid var(--border-light);
     margin-top: 4rem;
   }
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 768px) {
-    nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; }
+    nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; justify-content: flex-end; }
     .intro { flex-direction: column; gap: 2rem; margin: 3.5rem auto; }
     .intro img { width: 100%; max-width: 100%; }
     .grid { grid-template-columns: repeat(2, 1fr); }
@@ -299,7 +307,7 @@
 <!-- ============ HELLO PAGE ============ -->
 <section id="hello" class="page active">
   <div class="banner">
-    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80" alt="banner">
+    <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80" alt="banner">
     <div class="banner-text">
       <div class="title-line">
         <span class="super" id="superFont">captured by</span><span class="philly">phillyy</span>
