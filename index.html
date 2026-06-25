@@ -1,288 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>phillyy | portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fonts for the dynamic effect and main theme -->
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400&family=Playfair+Display:ital@0;1&family=Courier+Prime&family=Libre+Baskerville:ital@0;1&family=Lora:ital@0;1&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-main: #444444; /* Lighter shade of black */
-            --text-accent: #777777;
-            --adobe-red: #fa0f00;
-            --phillis-blue: #005b96; /* Darker blue color */
-            --border-color: #eeeeee;
-            --nav-font: 'EB Garamond', serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>captured by phillyy</title>
+<style>
+  :root {
+    --text-dark: #1a1a1a;
+    --text-muted: #777;
+    --pastel-blue: #4a6fa5;
+    --accent-red: #e23636;
+    --border-light: #ececec;
+  }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        body {
-            font-family: 'EB Garamond', serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    color: var(--text-dark);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
 
-        /* Navigation */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    gap: 2.5rem;
+    padding: 1.4rem 2.5rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-light);
+  }
 
-        header {
-            padding: 3rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+  nav a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
 
-        .logo {
-            font-family: var(--nav-font);
-            font-size: 1.8rem;
-            letter-spacing: -1px;
-            font-weight: 500;
-            color: #000;
-        }
+  nav a:hover { opacity: 0.55; }
+  nav a.active { border-bottom: 1px solid var(--text-dark); }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
+  /* ---------- PAGE HANDLING ---------- */
+  .page { display: none; }
+  .page.active { display: block; animation: fade 0.5s ease; }
 
-        nav ul li a {
-            font-family: var(--nav-font);
-            font-size: 1.1rem;
-            text-transform: lowercase;
-            color: #000;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-        nav ul li a:hover, nav ul li a.active {
-            opacity: 0.4;
-        }
+  /* ---------- BANNER ---------- */
+  .banner {
+    position: relative;
+    width: 100%;
+    height: 78vh;
+    min-height: 480px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-        /* Hero Banner Section */
-        .hero-banner {
-            position: relative;
-            width: 100%;
-            height: 65vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-            margin-bottom: 5rem;
-        }
+  .banner img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+  }
 
-        .hero-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.5; /* Dimmed to 50% */
-            z-index: 1;
-        }
+  .banner-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 1rem;
+  }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-            text-align: center;
-            width: 100%;
-        }
+  .title-line {
+    display: inline-block;
+    color: #111;
+  }
 
-        /* Title Layout to prevent phillyy from moving */
-        .title-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: 12px;
-            margin-bottom: 1rem;
-        }
+  .super {
+    font-size: 1.5rem;
+    vertical-align: super;
+    margin-right: 0.3rem;
+    color: #222;
+  }
 
-        #dynamic-prefix {
-            font-size: 1.2rem;
-            display: inline-block;
-            text-align: right;
-            min-width: 120px; /* Ensures phillyy stays in place regardless of font width */
-            font-weight: 400;
-        }
+  .philly {
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
 
-        .static-name {
-            font-size: 4rem;
-            font-weight: 400;
-            font-family: 'EB Garamond', serif;
-        }
+  .subtitle {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+    color: #2a2a2a;
+    letter-spacing: 0.02em;
+  }
 
-        .hero-subtitle {
-            font-size: 1.05rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+  .subtitle .adobe { color: var(--accent-red); font-weight: 600; }
 
-        .hero-welcome {
-            margin-top: 2.5rem;
-            font-family: var(--nav-font);
-            font-style: italic;
-            font-size: 1.25rem;
-            opacity: 0.9;
-        }
+  .welcome {
+    margin-top: 1.8rem;
+    font-size: 0.98rem;
+    color: #333;
+    line-height: 1.8;
+  }
 
-        .adobe-text { color: var(--adobe-red); font-weight: 600; }
+  /* ---------- INTRO ---------- */
+  .intro {
+    display: flex;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 6rem auto;
+    padding: 0 2.5rem;
+    align-items: center;
+  }
 
-        /* Bio Section */
-        .bio-section {
-            display: grid;
-            grid-template-columns: 0.8fr 1.2fr; /* Adjusted for portrait image */
-            gap: 5rem;
-            align-items: flex-start;
-            padding-bottom: 8rem;
-        }
+  .intro img {
+    width: 42%;
+    max-width: 420px;
+    object-fit: cover;
+    border-radius: 2px;
+  }
 
-        .bio-image img {
-            width: 100%;
-            aspect-ratio: 2/3; /* Forces vertical orientation */
-            object-fit: cover;
-            display: block;
-        }
+  .intro-text {
+    flex: 1;
+    font-size: 1.05rem;
+    color: #2a2a2a;
+    line-height: 1.85;
+  }
 
-        .bio-text {
-            font-size: 1.2rem;
-            color: var(--text-main);
-            padding-top: 2rem;
-        }
+  .intro-text p { margin-bottom: 1.2rem; }
+  .intro-text .name { color: var(--pastel-blue); font-weight: 600; }
 
-        .phillis-name {
-            color: var(--phillis-blue);
-            font-weight: 600;
-        }
+  /* ---------- GALLERY SECTIONS ---------- */
+  .gallery-wrap {
+    max-width: 1200px;
+    margin: 5rem auto;
+    padding: 0 2.5rem;
+  }
 
-        /* Portfolio Grids */
-        .page { display: none; animation: fadeIn 0.8s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .gallery-header {
+    max-width: 680px;
+    margin-bottom: 3rem;
+  }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
+  .gallery-header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
 
-        .photo-item img { width: 100%; display: block; }
-        .photo-item.wide { grid-column: span 2; }
+  .gallery-header p {
+    font-size: 1.02rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
 
-        /* Bookings */
-        .contact-form {
-            max-width: 600px;
-            margin: 4rem auto;
-            display: grid;
-            gap: 1.5rem;
-        }
-        .contact-form input, .contact-form textarea {
-            padding: 1rem;
-            border: 1px solid var(--border-color);
-            font-family: var(--nav-font);
-            font-size: 1.1rem;
-        }
-        .contact-form button {
-            background: #000;
-            color: #fff;
-            padding: 1rem;
-            border: none;
-            cursor: pointer;
-            font-family: var(--nav-font);
-            font-size: 1.1rem;
-        }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+  }
 
-        footer {
-            text-align: center;
-            padding: 6rem 0 3rem 0;
-            font-size: 0.9rem;
-            opacity: 0.4;
-        }
+  .grid img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 2px;
+    transition: transform 0.4s ease, filter 0.4s ease;
+    cursor: pointer;
+  }
 
-        @media (max-width: 850px) {
-            .bio-section { grid-template-columns: 1fr; gap: 2rem; }
-            .title-wrapper { flex-direction: column; align-items: center; gap: 0; }
-            #dynamic-prefix { text-align: center; min-width: auto; }
-            .static-name { font-size: 3rem; }
-        }
-    </style>
+  .grid img:hover { transform: scale(1.015); filter: brightness(0.95); }
+
+  /* ---------- BOOKINGS ---------- */
+  .bookings {
+    max-width: 640px;
+    margin: 6rem auto;
+    padding: 0 2.5rem;
+  }
+
+  .bookings h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+
+  .bookings p {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .bookings form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+  .bookings label {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .bookings input,
+  .bookings textarea,
+  .bookings select {
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid var(--border-light);
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #fafafa;
+    transition: border 0.25s ease;
+  }
+
+  .bookings input:focus,
+  .bookings textarea:focus,
+  .bookings select:focus {
+    outline: none;
+    border-color: #bbb;
+    background: #fff;
+  }
+
+  .bookings textarea { resize: vertical; min-height: 120px; }
+
+  .bookings button {
+    margin-top: 0.5rem;
+    padding: 0.9rem;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.25s ease;
+  }
+
+  .bookings button:hover { opacity: 0.8; }
+
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #aaa;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-light);
+    margin-top: 4rem;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 768px) {
+    nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; }
+    .intro { flex-direction: column; gap: 2rem; margin: 3.5rem auto; }
+    .intro img { width: 100%; max-width: 100%; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .philly { letter-spacing: -0.01em; }
+  }
+
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="logo">phillyy</div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="nav-link active" data-page="hello">hello~</a></li>
-                    <li><a href="#" class="nav-link" data-page="graduation">graduation</a></li>
-                    <li><a href="#" class="nav-link" data-page="portraits">portraits</a></li>
-                    <li><a href="#" class="nav-link" data-page="bookings">bookings</a></li>
-                </ul>
-            </nav>
-        </header>
+<nav>
+  <a class="nav-link active" data-page="hello">hello~</a>
+  <a class="nav-link" data-page="graduation">graduation</a>
+  <a class="nav-link" data-page="portraits">portraits</a>
+  <a class="nav-link" data-page="bookings">bookings</a>
+</nav>
 
-        <main>
-            <!-- HELLO PAGE -->
-            <section id="hello" class="page active">
-                <div class="hero-banner">
-                    <video class="hero-video" autoplay muted loop playsinline>
-                        <source src="https://assets.mixkit.co/videos/preview/mixkit-wavy-surface-of-water-in-the-sunlight-20224-large.mp4" type="video/mp4">
-                    </video>
-                    <div class="hero-content">
-                        <div class="title-wrapper">
-                            <span id="dynamic-prefix">captured by</span>
-                            <span class="static-name">phillyy</span>
-                        </div>
-                        <p class="hero-subtitle">
-                            freelance photographer, berkeley student, <span class="adobe-text">Adobe</span> creative apprentice – just traversing through the universe
-                        </p>
-                        <div class="hero-welcome">
-                            <p>welcome to my alternate universe</p>
-                            <p>take your time, feel free to stay for a while~</p>
-                        </div>
-                    </div>
-                </div>
+<!-- ============ HELLO PAGE ============ -->
+<section id="hello" class="page active">
+  <div class="banner">
+    <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1920&q=80" alt="banner">
+    <div class="banner-text">
+      <div class="title-line">
+        <span class="super" id="superFont">captured by</span><span class="philly">phillyy</span>
+      </div>
+      <div class="subtitle">
+        freelance photographer, berkeley student, <span class="adobe">Adobe</span> creative apprentice
+      </div>
+      <div class="welcome">
+        welcome to my alternate universe<br>
+        take your time, feel free to stay for a while~
+      </div>
+    </div>
+  </div>
 
-                <div class="bio-section">
-                    <div class="bio-image">
-                        <!-- Vertical Portrait Placeholder -->
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" alt="Portrait of Phillis">
-                    </div>
-                    <div class="bio-text">
-                        <p>hi, my name is <span class="phillis-name">phillis</span>! I’m a berkeley chemistry (sadge) student who found a creative outlet through photography. I started with creative portraitshoots and have always enjoyed the directing, planning, and executing of a creative vision with other people.</p>
-                        <br>
-                        <p>In this coming age of AI, let’s still find a way to connect with each other~</p>
-                    </div>
-                </div>
-            </section>
+  <div class="intro">
+    <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&w=800&q=80" alt="phillis portrait">
+    <div class="intro-text">
+      <p>hi, my name is <span class="name">phillis</span>!</p>
+      <p>I'm a berkeley chemistry (sadge) student who found a creative outlet through photography. I started with creative portraitshoots and have always enjoyed the directing, planning, and executing of a creative vision with other people.</p>
+      <p>In this age of AI, let's find a way to create and connect with each other.</p>
+    </div>
+  </div>
+</section>
 
-            <!-- GRADUATION PAGE -->
-            <section id="graduation" class="page">
-                <h2 style="font-weight: 400; margin-bottom: 1rem;">Graduation</h2>
-                <p style="color: var(--text-accent); margin-bottom: 2rem;">A celebration of tran
+<!-- ============ GRADUATION PAGE ============ -->
+<section id="graduation" class="page">
+  <div class="gallery-wrap">
+    <div class="gallery-header">
+      <h1>graduation</h1>
+      <p>Moments of arrival and farewell — the weight of years held in a single frame. These sessions celebrate the people who made it, captured in golden light and quiet pride.</p>
+    </div>
+    <div class="grid">
+      <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="grad 1">
+      <img src="https://images.unsplash.com/photo-1627556704302-624286467c65?auto=format&fit=crop&w=600&q=80" alt="grad 2">
+      <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=600&q=80" alt="grad 3">
+      <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&w=600&q=80" alt="grad 4">
+      <img src="https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&w=600&q=80" alt="grad 5">
+      <img src="https://images.unsplash.com/photo-1622397333309-3056849bc70b?auto=format&fit=crop&w=600&q=80" alt="grad 6">
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTRAITS PAGE ============ -->
+<section id="portraits" class="page">
+  <div class="gallery-wrap">
+    <div class="gallery-header">
+      <h1>portraits</h1>
+      <p>Where it all began. Portraiture is collaboration — a conversation between light, expression, and trust. Each shoot is built around a vision shaped together with the people in front of the lens.</p>
+    </div>
+    <div class="grid">
+      <img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=600&q=80" alt="portrait 1">
+      <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80" alt="portrait 2">
+      <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="portrait 3">
+      <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="portrait 4">
+      <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80" alt="portrait 5">
+      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" alt="portrait 6">
+    </div>
+  </div>
+</section>
+
+<!-- ============ BOOKINGS PAGE ============ -->
+<section id="bookings" class="page">
+  <div class="bookings">
+    <h1>bookings</h1>
+    <p>Have a vision in mind? Let's make it real. Fill out the form below and I'll get back to you to chat about dates, location, and creative direction.</p>
+    <form onsubmit="event.preventDefault(); alert('Thanks! This is a demo form — connect it to a backend or service like Formspree to receive submissions.');">
+      <div>
+        <label>Name</label>
+        <input type="text" placeholder="your name" required>
+      </div>
+      <div>
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com" required>
+      </div>
+      <div>
+        <label>Shoot Type</label>
+        <select>
+          <option>Portraits</option>
+          <option>Graduation</option>
+          <option>Other / Custom</option>
+        </select>
+      </div>
+      <div>
+        <label>Tell me about your idea</label>
+        <textarea placeholder="theme, vibe, location, dates..."></textarea>
+      </div>
+      <button type="submit">send inquiry</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> captured by phillyy · berkeley, ca
+</footer>
+
+<script>
+  // ---- Page navigation ----
+  const links = document.querySelectorAll('.nav-link');
+  const pages = document.querySelectorAll('.page');
+
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      const target = link.dataset.page;
+      pages.forEach(p => p.classList.remove('active'));
+      links.forEach(l => l.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+      link.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ---- "captured by" font swapper (every 0.25s) ----
+  const fonts = [
+    "'Courier New', monospace",
+    "Georgia, serif",
+    "'Brush Script MT', cursive",
+    "'Trebuchet MS', sans-serif",
+    "Impact, sans-serif",
+    "'Palatino Linotype', serif",
+    "'Comic Sans MS', cursive",
+    "Verdana, sans-serif"
+  ];
+  let fi = 0;
+  const superEl = document.getElementById('superFont');
+  setInterval(() => {
+    fi = (fi + 1) % fonts.length;
+    superEl.style.fontFamily = fonts[fi];
+  }, 250);
+
+  // ---- Footer year ----
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
