@@ -203,31 +203,41 @@
   }
 
   .grid img {
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    border-radius: 2px;
-    transition: transform 0.4s ease, filter 0.4s ease;
-    cursor: pointer;
-  }
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 2px;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  cursor: pointer;
+}
+
+/* landscape grid inside chapter detail pages */
+.chapter-detail .grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.chapter-detail .grid img {
+  aspect-ratio: 3 / 2;   /* landscape */
+}
 
   .grid img:hover { transform: scale(1.015); filter: brightness(0.95); }
 
   /* ---------- CHAPTER GRID (PORTRAITS) ---------- */
-  .chapter-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-  }
+  /* ---------- CHAPTER GRID (LANDSCAPE) ---------- */
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+}
 
-  .chapter-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    color: var(--text-dark);
-    transition: transform 0.35s ease;
-  }
+.chapter-card .cover {
+  width: 100%;
+  aspect-ratio: 3 / 2;   /* landscape */
+  object-fit: cover;
+  border-radius: 2px;
+  background: #f2f2f2;
+  transition: filter 0.35s ease;
+}
 
   .chapter-card:hover { transform: translateY(-4px); }
 
@@ -363,19 +373,20 @@
   }
 
   /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 768px) {
-    nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; justify-content: flex-end; }
-    .intro { flex-direction: column; gap: 2rem; margin: 3.5rem auto; }
-    .intro img { width: 100%; max-width: 100%; }
-    .grid { grid-template-columns: repeat(2, 1fr); }
-    .chapter-grid { grid-template-columns: repeat(2, 1fr); }
-    .philly { letter-spacing: -0.01em; }
-  }
+@media (max-width: 768px) {
+  nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; justify-content: flex-end; }
+  .intro { flex-direction: column; gap: 2rem; margin: 3.5rem auto; }
+  .intro img { width: 100%; max-width: 100%; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .chapter-grid { grid-template-columns: 1fr; }
+  .philly { letter-spacing: -0.01em; }
+}
 
-  @media (max-width: 480px) {
-    .grid { grid-template-columns: 1fr; }
-    .chapter-grid { grid-template-columns: 1fr; }
-  }
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  .chapter-grid { grid-template-columns: 1fr; }
+  .chapter-detail .grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
