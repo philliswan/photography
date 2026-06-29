@@ -223,33 +223,28 @@
   .grid img:hover { transform: scale(1.015); filter: brightness(0.95); }
 
   /* ---------- CHAPTER GRID (LANDSCAPE) ---------- */
-.chapter-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2.5rem;
+.chapter-card {
+  position: relative;
 }
-
-.chapter-card .cover {
-  width: 100%;
-  aspect-ratio: 3 / 2;   /* landscape */
-  object-fit: cover;
-  border-radius: 2px;
-  background: #f2f2f2;
-  transition: filter 0.35s ease;
+.chapter-card .chapter-num {
+  position: absolute;
+  top: -0.4em;
+  left: 0.3em;
+  font-size: 6rem;
+  font-weight: 700;
+  color: rgba(74,111,165,0.08); /* your pastel blue, very faint */
+  z-index: 0;
+  pointer-events: none;
 }
-
-  .chapter-card:hover { transform: translateY(-4px); }
 
   .chapter-card .cover {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 2px;
-    background: #f2f2f2;
-    transition: filter 0.35s ease;
-  }
-
-  .chapter-card:hover .cover { filter: brightness(0.94); }
+  filter: grayscale(60%);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.chapter-card:hover .cover {
+  filter: grayscale(0%);
+  transform: scale(1.03);
+}
 
   .chapter-meta {
     padding: 0.9rem 0.1rem 0;
