@@ -208,7 +208,7 @@
   aspect-ratio: 3 / 4;
   object-fit: cover;
   border-radius: 2px;
-  transition: transform 0.4s ease, filter 0.4s ease;
+  transition: transform 0.4s ease;
   cursor: pointer;
 }
 
@@ -220,7 +220,7 @@
   aspect-ratio: 3 / 2;   /* landscape */
 }
 
-  .grid img:hover { transform: scale(1.015); filter: brightness(0.95); }
+  .grid img:hover { transform: scale(1.015); }
 
   /* ---------- CHAPTER GRID (LANDSCAPE) ---------- */
 .chapter-card {
@@ -237,12 +237,11 @@
   pointer-events: none;
 }
 
+  /* image now stays fully saturated; only a subtle zoom on hover */
   .chapter-card .cover {
-  filter: grayscale(60%);
-  transition: filter 0.5s ease, transform 0.5s ease;
+  transition: transform 0.5s ease;
 }
 .chapter-card:hover .cover {
-  filter: grayscale(0%);
   transform: scale(1.03);
 }
 
@@ -366,6 +365,90 @@
     margin-top: 4rem;
   }
 
+  /* ---------- TIMELINE ---------- */
+  .timeline-wrap {
+    max-width: 1100px;
+    margin: 5rem auto;
+    padding: 0 2.5rem;
+  }
+
+  .timeline {
+    position: relative;
+    margin: 3rem auto 2rem;
+    padding: 2rem 0;
+  }
+
+  /* the center line */
+  .timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--border-light);
+    transform: translateX(-50%);
+  }
+
+  /* each item takes half the width and floats to its side */
+  .tl-item {
+    position: relative;
+    width: 50%;
+    padding: 1.5rem 2.5rem;
+    box-sizing: border-box;
+  }
+  .tl-item.left  { left: 0; }
+  .tl-item.right { left: 50%; }
+
+  /* the dot on the center line */
+  .tl-item::after {
+    content: "";
+    position: absolute;
+    top: 2.4rem;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border: 2px solid var(--pastel-blue);
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .tl-item.left::after  { right: -7px; }
+  .tl-item.right::after { left: -7px; }
+
+  /* the photo card */
+  .tl-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+  .tl-card img {
+    width: 100%;
+    aspect-ratio: 3 / 2;      /* landscape */
+    object-fit: cover;
+    display: block;
+  }
+
+  /* info overlay — hidden until hover */
+  .tl-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1.2rem 1.3rem;
+    color: #fff;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .tl-card:hover .tl-info {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .tl-info h3 { margin: 0 0 0.2rem; font-size: 1.15rem; font-weight: 600; }
+  .tl-info .tl-date { font-size: 0.85rem; opacity: 0.85; display: block; margin-bottom: 0.4rem; letter-spacing: 0.04em; }
+  .tl-info p { margin: 0; font-size: 0.95rem; opacity: 0.92; font-style: italic; }
+
   /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   nav { gap: 1.3rem; padding: 1rem 1.3rem; flex-wrap: wrap; justify-content: flex-end; }
@@ -374,6 +457,13 @@
   .grid { grid-template-columns: repeat(2, 1fr); }
   .chapter-grid { grid-template-columns: 1fr; }
   .philly { letter-spacing: -0.01em; }
+
+  /* timeline collapses to a single left-aligned column */
+  .timeline-line { left: 20px; }
+  .tl-item,
+  .tl-item.right { width: 100%; left: 0; padding-left: 3.5rem; padding-right: 0.5rem; }
+  .tl-item.left::after,
+  .tl-item.right::after { left: 13px; right: auto; }
 }
 
 @media (max-width: 480px) {
@@ -382,7 +472,7 @@
   .chapter-detail .grid { grid-template-columns: 1fr; }
 }
 
-/* FORCE LANDSCAPE — paste at bottom of <style> */
+/* FORCE LANDSCAPE */
 .chapter-grid {
   grid-template-columns: repeat(2, 1fr) !important;
 }
@@ -391,7 +481,7 @@
 .chapter-detail .grid img {
   aspect-ratio: 3 / 2 !important;
   width: 100% !important;
-  height: auto !important;     /* let aspect-ratio control height */
+  height: auto !important;
   object-fit: cover !important;
 }
 
@@ -403,7 +493,7 @@
 .chapter-card {
   border: 1px solid #e2e2e2;
   border-radius: 6px;
-  overflow: hidden;          /* keeps the image corners rounded inside the box */
+  overflow: hidden;
   background: #fff;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
   display: flex;
@@ -415,12 +505,11 @@
   transform: translateY(-3px);
 }
 
-/* image sits flush at the top of the box, landscape */
 .chapter-card .cover {
   width: 100%;
   aspect-ratio: 3 / 2;
   object-fit: cover;
-  border-radius: 0;          /* corners handled by the box's overflow:hidden */
+  border-radius: 0;
   display: block;
 }
 
@@ -432,6 +521,7 @@
 <nav>
   <a class="nav-link active" data-page="hello">hello~</a>
   <a class="nav-link" data-page="portraits">portraits</a>
+  <a class="nav-link" data-page="timeline">timeline</a>
   <a class="nav-link" data-page="graduation">graduation</a>
   <a class="nav-link" data-page="bookings">bookings</a>
 </nav>
@@ -485,6 +575,86 @@
     <!-- Chapter detail subpages get injected here -->
     <div class="chapter-detail-container"></div>
 
+  </div>
+</section>
+
+<!-- ============ TIMELINE PAGE ============ -->
+<section id="timeline" class="page">
+  <div class="timeline-wrap">
+    <div class="gallery-header">
+      <h1>timeline</h1>
+      <p>A walk through the moments, month by month. Hover over any photo to see what it was.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-line"></div>
+
+      <div class="tl-item left">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>Sunflowers and Ocean</h3>
+            <span class="tl-date">June 2025</span>
+            <p>Where it all started — golden fields by the coast.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item right">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>Escape in the Spring</h3>
+            <span class="tl-date">February 2024</span>
+            <p>First warm light after a long winter.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item left">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>Golden Hour Smiles</h3>
+            <span class="tl-date">March 2024</span>
+            <p>Quiet smiles in the last light of day.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item right">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>Grassy Waves</h3>
+            <span class="tl-date">April 2024</span>
+            <p>Open skies and fields that went on forever.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item left">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>Sparks of Flame</h3>
+            <span class="tl-date">May 2024</span>
+            <p>Sparks of flame, sparks of feeling.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item right">
+        <div class="tl-card">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80" alt="">
+          <div class="tl-info">
+            <h3>The In-Between</h3>
+            <span class="tl-date">June 2024</span>
+            <p>Learning to see the in-between.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
