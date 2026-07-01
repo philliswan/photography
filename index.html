@@ -215,17 +215,22 @@
 
   .chapter-card {
     position: relative;
-    grid-column: 1;               /* default left */
-    margin-bottom: -3.5rem;       /* NEGATIVE margin => tight stagger overlap */
+    grid-column: 1;
+    /* gap between SAME-SIDE cards = 1/2 image height.
+       Two stacked same-side cards are 2 rows apart in the grid,
+       so the row-to-row margin needs to account for the interleaved
+       opposite-side card. See JS: --same-side-gap is set dynamically. */
+    margin-bottom: var(--same-side-gap, -3.5rem);
     transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
     z-index: 1;
   }
 
-  /* even (2nd, 4th...) cards go to right column and are pushed DOWN to stagger */
   .chapter-card.right {
     grid-column: 2;
-    margin-top: 7rem;             /* offset so it starts ~halfway down the left one */
+    margin-top: var(--stagger-offset, 7rem);
   }
+
+
   .chapter-card.left { grid-column: 1; }
 
   /* the dot on the timeline */
@@ -683,6 +688,45 @@
   }
 
   document.querySelector('[data-page="portraits"]').addEventListener('click', closeChapter);
+
+// ---- Spacing: same-side vertical gap = 1/2 image height ----
+  function updateTimelineSpacing() {
+    const firstCover = timeline.querySelector('.chapter-card .cover');
+    if (!firstCover) return;
+
+    const imgH = firstCover.getBoundingClientRect().height;
+    if (!imgH) return;
+
+    // Cards alternate L/R in a 2-col grid. In grid auto-placement,
+    // consecutive same-side cards are separated by ONE opposite-side
+    // card that occupies the intervening row. The visible vertical
+    // distance from the bottom of one card to the top of the next
+    // same-side card is governed by margin-bottom.
+    //
+    // We want: gap between same-side cards = imgH / 2.
+    // The intervening opposite card has full height (imgH) plus its
+    // own stagger offset, so the negative margin must pull the next
+    // same-side card up by (imgH - imgH/2) = imgH/2 relative to a
+    // naturally stacked layout.
+    const halfImg = imgH / 2;
+
+    // stagger: right column starts halfway down the left image
+    timeline.style.setProperty('--stagger-offset', `${halfImg}px`);
+
+    // negative margin so same-side gap equals half the image height
+    timeline.style.setProperty('--same-side-gap', `-${halfImg}px`);
+  }
+
+  // Apply after images load (heights aren't known until then)
+  window.addEventListener('load', updateTimelineSpacing);
+  window.addEventListener('resize', updateTimelineSpacing);
+
+  // Also recalc once covers have loaded, in case 'load' already fired
+  timeline.querySelectorAll('.cover').forEach(img => {
+    if (img.complete) { updateTimelineSpacing(); }
+    else { img.addEventListener('load', updateTimelineSpacing); }
+  });
+
 </script>
 
 </body>
