@@ -98,10 +98,7 @@
     color: #fff;
   }
 
-  .title-line {
-    display: inline-block;
-    color: #fff;
-  }
+  .title-line { display: inline-block; color: #fff; }
 
   .super {
     font-size: 1.6rem;
@@ -192,9 +189,14 @@
     max-width: 1000px;
     margin: 0 auto;
     padding: 1rem 0 3rem;
+    /* two columns with the center line running between them */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;      /* space on either side of the center line */
+    align-items: start;
   }
 
-  /* the vertical line down the middle */
+  /* vertical center line */
   .timeline::before {
     content: "";
     position: absolute;
@@ -204,19 +206,27 @@
     width: 2px;
     background: #d8d8d8;
     transform: translateX(-50%);
+    z-index: 0;
   }
+
+  /* When a chapter is being hovered, blur everything else */
+  .timeline.dimmed .chapter-card:not(:hover) { filter: blur(3px); opacity: 0.55; }
+  .timeline.dimmed::before { opacity: 0.4; }
 
   .chapter-card {
     position: relative;
-    width: 50%;
-    padding: 0 2.5rem;          /* gap between card and center line */
-    margin-bottom: 2.2rem;      /* keeps vertical spacing tight */
-    box-sizing: border-box;
+    grid-column: 1;               /* default left */
+    margin-bottom: -3.5rem;       /* NEGATIVE margin => tight stagger overlap */
+    transition: filter 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+    z-index: 1;
   }
 
-  /* odd chapters on the LEFT, even on the RIGHT (zigzag) */
-  .chapter-card.left  { left: 0;   text-align: right; }
-  .chapter-card.right { left: 50%; text-align: left; }
+  /* even (2nd, 4th...) cards go to right column and are pushed DOWN to stagger */
+  .chapter-card.right {
+    grid-column: 2;
+    margin-top: 7rem;             /* offset so it starts ~halfway down the left one */
+  }
+  .chapter-card.left { grid-column: 1; }
 
   /* the dot on the timeline */
   .chapter-card::after {
@@ -228,10 +238,10 @@
     background: #dce6f2;
     border: 2px solid var(--pastel-blue);
     border-radius: 50%;
-    z-index: 2;
+    z-index: 3;
   }
-  .chapter-card.left::after  { right: -8px; }   /* sits on the center line */
-  .chapter-card.right::after { left: -8px; }
+  .chapter-card.left::after  { right: -1.5rem; transform: translateX(50%); }
+  .chapter-card.right::after { left: -1.5rem;  transform: translateX(-50%); }
 
   .chapter-card .cover {
     width: 100%;
@@ -240,15 +250,48 @@
     border-radius: 4px;
     border: 1px solid #e2e2e2;
     display: block;
-    transition: filter 0.4s ease, transform 0.4s ease;
     cursor: pointer;
-  }
-  .chapter-card:hover .cover {
-    filter: brightness(0.94);
-    transform: scale(1.015);
+    transition: transform 0.4s ease, filter 0.4s ease;
   }
 
-  .chapter-meta { padding: 0.8rem 0.1rem 0; }
+  /* (a) image expands slightly on hover */
+  .chapter-card:hover { z-index: 5; }
+  .chapter-card:hover .cover {
+    transform: scale(1.06);
+    filter: brightness(0.97);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  }
+
+  /* (b) info label — hidden by default, on the OPPOSITE side of the image */
+  .chapter-meta {
+    position: absolute;
+    top: 1.1rem;
+    width: max-content;
+    max-width: 15rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    z-index: 6;
+  }
+  /* left image -> label appears to its RIGHT (across the line) */
+  .chapter-card.left .chapter-meta {
+    left: 100%;
+    margin-left: 3.2rem;
+    text-align: left;
+    transform: translateX(-8px);
+  }
+  /* right image -> label appears to its LEFT (across the line) */
+  .chapter-card.right .chapter-meta {
+    right: 100%;
+    margin-right: 3.2rem;
+    text-align: right;
+    transform: translateX(8px);
+  }
+
+  .chapter-card:hover .chapter-meta {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
   .chapter-date {
     font-size: 0.85rem;
@@ -258,19 +301,20 @@
     margin-bottom: 0.3rem;
   }
   .chapter-title {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     margin-bottom: 0.35rem;
+    color: var(--text-dark);
   }
   .chapter-caption {
-    font-size: 1.02rem;
+    font-size: 1.05rem;
     font-style: italic;
     color: #555;
     line-height: 1.5;
   }
 
-  /* ---------- GRID (used by graduation + chapter detail) ---------- */
+  /* ---------- GRID (graduation + chapter detail) ---------- */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -289,13 +333,8 @@
 
   .grid img:hover { transform: scale(1.015); filter: brightness(0.95); }
 
-  /* landscape grid inside chapter detail pages */
-  .chapter-detail .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .chapter-detail .grid img {
-    aspect-ratio: 3 / 2;   /* landscape */
-  }
+  .chapter-detail .grid { grid-template-columns: repeat(2, 1fr); }
+  .chapter-detail .grid img { aspect-ratio: 3 / 2; }
 
   /* ---------- CHAPTER DETAIL SUBPAGE ---------- */
   .chapter-detail { display: none; }
@@ -319,29 +358,10 @@
     padding: 0 2.5rem;
   }
 
-  .bookings h1 {
-    font-size: 2.6rem;
-    font-weight: 600;
-    margin-bottom: 1.2rem;
-  }
-
-  .bookings p {
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    line-height: 1.8;
-    font-size: 1.15rem;
-  }
-
+  .bookings h1 { font-size: 2.6rem; font-weight: 600; margin-bottom: 1.2rem; }
+  .bookings p { color: var(--text-muted); margin-bottom: 2.5rem; line-height: 1.8; font-size: 1.15rem; }
   .bookings form { display: flex; flex-direction: column; gap: 1.2rem; }
-
-  .bookings label {
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: #555;
-    margin-bottom: 0.3rem;
-    display: block;
-  }
+  .bookings label { font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; color: #555; margin-bottom: 0.3rem; display: block; }
 
   .bookings input,
   .bookings textarea,
@@ -358,12 +378,7 @@
 
   .bookings input:focus,
   .bookings textarea:focus,
-  .bookings select:focus {
-    outline: none;
-    border-color: #bbb;
-    background: #fff;
-  }
-
+  .bookings select:focus { outline: none; border-color: #bbb; background: #fff; }
   .bookings textarea { resize: vertical; min-height: 120px; }
 
   .bookings button {
@@ -399,17 +414,35 @@
     .grid { grid-template-columns: repeat(2, 1fr); }
     .philly { letter-spacing: -0.01em; }
 
-    /* timeline stacks into one column */
-    .timeline::before { left: 20px; }
-    .chapter-card {
-      width: 100%;
-      padding-left: 3.5rem;
-      padding-right: 0.5rem;
-      text-align: left !important;
+    /* timeline stacks into one column on mobile */
+    .timeline {
+      grid-template-columns: 1fr;
+      column-gap: 0;
     }
-    .chapter-card.left, .chapter-card.right { left: 0; }
+    .timeline::before { left: 20px; }
+    .chapter-card,
+    .chapter-card.left,
+    .chapter-card.right {
+      grid-column: 1;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      padding-left: 3.5rem;
+    }
     .chapter-card.left::after,
-    .chapter-card.right::after { left: 12px; right: auto; }
+    .chapter-card.right::after {
+      left: 12px; right: auto; transform: none;
+    }
+    /* On mobile, just show info below (no fancy side reveal) */
+    .chapter-meta {
+      position: static;
+      opacity: 1 !important;
+      max-width: none;
+      margin: 0.7rem 0 0 3.5rem !important;
+      text-align: left !important;
+      transform: none !important;
+      pointer-events: auto;
+    }
+    .timeline.dimmed .chapter-card:not(:hover) { filter: none; opacity: 1; }
   }
 
   @media (max-width: 480px) {
@@ -460,20 +493,17 @@
 <section id="portraits" class="page">
   <div class="gallery-wrap">
 
-    <!-- Chapter overview -->
     <div class="chapter-overview">
       <div class="gallery-header">
         <h1>portraits</h1>
-        <p>come take a look through my lens!</p>
-        <p>grassy waves, sparks of flames, here's how i grew and changed through the lens.</p>
+        <p>you tumbled across my photography journey! grassy waves, sparks of flames, here's how i grew and changed through the lens.</p>
       </div>
 
       <div class="timeline">
-        <!-- Chapter cards generated by JS below -->
+        <!-- Chapter cards generated by JS -->
       </div>
     </div>
 
-    <!-- Chapter detail subpages get injected here -->
     <div class="chapter-detail-container"></div>
 
   </div>
@@ -548,7 +578,7 @@
     });
   });
 
-  // ---- "captured by" font swapper (every 0.25s) ----
+  // ---- "captured by" font swapper ----
   const fonts = [
     "'Courier New', monospace",
     "Georgia, serif",
@@ -566,7 +596,6 @@
     superEl.style.fontFamily = fonts[fi];
   }, 250);
 
-  // ---- Footer year ----
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // ---- Portrait chapters data ----
@@ -603,7 +632,7 @@
       photos: ["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80"] }
   ];
 
-  const chapterGrid = document.querySelector('.timeline');
+  const timeline = document.querySelector('.timeline');
   const chapterOverview = document.querySelector('.chapter-overview');
   const detailContainer = document.querySelector('.chapter-detail-container');
 
@@ -617,8 +646,15 @@
         <div class="chapter-title">${ch.title}</div>
         <div class="chapter-caption">${ch.caption}</div>
       </div>`;
-    card.addEventListener('click', () => openChapter(i));
-    chapterGrid.appendChild(card);
+
+    // (c) blur the rest of the timeline while hovering this card
+    card.addEventListener('mouseenter', () => timeline.classList.add('dimmed'));
+    card.addEventListener('mouseleave', () => timeline.classList.remove('dimmed'));
+
+    // Clicking the cover opens the chapter
+    card.querySelector('.cover').addEventListener('click', () => openChapter(i));
+
+    timeline.appendChild(card);
   });
 
   function openChapter(i) {
@@ -646,7 +682,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Reset portraits to overview whenever returning via nav
   document.querySelector('[data-page="portraits"]').addEventListener('click', closeChapter);
 </script>
 
