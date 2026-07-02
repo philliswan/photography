@@ -500,6 +500,49 @@
    .grid { grid-template-columns: 1fr; }
    .chapter-detail .grid { grid-template-columns: 1fr; }
  }
+
+ /* ---------- CHAPTER STORY (narrative layout) ---------- */
+  .chapter-story {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    margin-top: 1rem;
+  }
+
+  .story-block {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .story-block.img-right { flex-direction: row-reverse; }
+
+  .story-block img {
+    width: 48%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e2e2e2;
+    flex-shrink: 0;
+  }
+
+  .story-text {
+    flex: 1;
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: #2a2a2a;
+  }
+
+  .story-text p { margin-bottom: 1.1rem; }
+  .story-text p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 768px) {
+    .story-block,
+    .story-block.img-right { flex-direction: column; gap: 1.5rem; }
+    .story-block img { width: 100%; }
+    .chapter-story { gap: 3.5rem; }
+  }
+  
 </style>
 </head>
 <body>
@@ -731,23 +774,44 @@
 
 
  function openChapter(i) {
-   const ch = chapters[i];
-   chapterOverview.style.display = 'none';
-   detailContainer.innerHTML = `
-     <div class="chapter-detail active">
-       <a class="back-link">← back to chapters</a>
-       <div class="gallery-header">
-         <div class="chapter-date">${ch.date}</div>
-         <h1>${ch.title}</h1>
-         <p>${ch.caption}</p>
-       </div>
-       <div class="grid">
-         ${ch.photos.map(p => `<img src="${p}" alt="${ch.title} photo">`).join('')}
-       </div>
-     </div>`;
-   detailContainer.querySelector('.back-link').addEventListener('click', closeChapter);
-   window.scrollTo({ top: 0, behavior: 'smooth' });
- }
+    const ch = chapters[i];
+    chapterOverview.style.display = 'none';
+
+    let body;
+    if (ch.story && ch.story.length) {
+      // Narrative layout: alternating image + text blocks
+      body = `
+        <div class="chapter-story">
+          ${ch.story.map((block, idx) => `
+            <div class="story-block ${idx % 2 === 0 ? 'img-left' : 'img-right'}">
+              <img src="${block.img}" alt="${ch.title} photo ${idx + 1}">
+              <div class="story-text">
+                ${block.text.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>`;
+    } else {
+      // Fallback grid layout for other chapters
+      body = `
+        <div class="grid">
+          ${ch.photos.map(p => `<img src="${p}" alt="${ch.title} photo">`).join('')}
+        </div>`;
+    }
+
+    detailContainer.innerHTML = `
+      <div class="chapter-detail active">
+        <a class="back-link">← back to chapters</a>
+        <div class="gallery-header">
+          <div class="chapter-date">${ch.date}</div>
+          <h1>${ch.title}</h1>
+          <p>${ch.caption}</p>
+        </div>
+        ${body}
+      </div>`;
+    detailContainer.querySelector('.back-link').addEventListener('click', closeChapter);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
 
  function closeChapter() {
