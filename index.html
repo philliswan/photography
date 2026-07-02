@@ -539,6 +539,71 @@
     .story-text { font-size: 1.1rem; }
   }
 
+  /* ---------- GRADUATION ---------- */
+  .grad-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    border: 1px solid #e2e2e2;
+    margin-bottom: 3rem;
+  }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .plan-card {
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    padding: 2rem 1.6rem;
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+
+  .plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    border-color: #d0d0d0;
+  }
+
+  .plan-card h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    letter-spacing: -0.01em;
+  }
+
+  .plan-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    flex: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .plan-price {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    letter-spacing: -0.01em;
+  }
+
+  .plan-price span {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0;
+  }
+
+  @media (max-width: 768px) {
+    .plans { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -610,20 +675,34 @@
 
 <!-- ============ GRADUATION PAGE ============ -->
 <section id="graduation" class="page">
- <div class="gallery-wrap">
-   <div class="gallery-header">
-     <h1>graduation</h1>
-     <p>Moments of arrival and farewell — the weight of years held in a single frame. These sessions celebrate the people who made it, captured in golden light and quiet pride.</p>
-   </div>
-   <div class="grid">
-     <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="grad 1">
-     <img src="https://images.unsplash.com/photo-1627556704302-624286467c65?auto=format&fit=crop&w=600&q=80" alt="grad 2">
-     <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=600&q=80" alt="grad 3">
-     <img src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&w=600&q=80" alt="grad 4">
-     <img src="https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&w=600&q=80" alt="grad 5">
-     <img src="https://images.unsplash.com/photo-1622397333309-3056849bc70b?auto=format&fit=crop&w=600&q=80" alt="grad 6">
-   </div>
- </div>
+  <div class="gallery-wrap">
+    <div class="gallery-header">
+      <h1>graduation</h1>
+      <p>Moments of arrival and farewell — the weight of years held in a single frame. Pick the plan that fits your crew, and let's make it real.</p>
+    </div>
+
+    <img class="grad-banner" src="graduation_banner.png" alt="graduation banner">
+
+    <div class="plans">
+      <div class="plan-card">
+        <h2>Individual</h2>
+        <p class="plan-desc">Just you and the lens — a solo session all about your milestone.</p>
+        <div class="plan-price">$150<span>/hr</span></div>
+      </div>
+
+      <div class="plan-card">
+        <h2>Group</h2>
+        <p class="plan-desc">Bring the whole crew and celebrate together (3+ people).</p>
+        <div class="plan-price">$70<span>/hr</span></div>
+      </div>
+
+      <div class="plan-card">
+        <h2>Hybrid</h2>
+        <p class="plan-desc">Best of both — 45 min solo + 45 min with friends.</p>
+        <div class="plan-price">$250<span>/90 min</span></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
