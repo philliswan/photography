@@ -110,10 +110,15 @@
 
 
  .title-line {
-    display: inline-block;
-    color: #fff;
-    transform: translateY(-2rem);
-  }
+  display: inline-block;
+  color: #fff;
+  transform: translateY(-2rem);
+  /* the font-size now lives here, so the block's strut is the
+     tallest thing on the line and controls the line box height */
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 1.6;
+  font-family: 'EB Garamond', Georgia, serif;
+}
 
 
  .super {
@@ -125,11 +130,21 @@
 
 
  .philly {
-   font-size: clamp(3rem, 9vw, 7rem);
-   font-weight: 700;
-   letter-spacing: -0.02em;
-   font-family: 'EB Garamond', Georgia, serif;
- }
+  font-size: 1em;          /* inherits the size from .title-line */
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-family: 'EB Garamond', Georgia, serif;
+  line-height: 1;          /* can no longer stretch the line box */
+}
+
+#superFont {
+  display: inline-block;   /* still baseline-aligned with "philli." */
+  width: 0;                /* set by JS once fonts are ready */
+  text-align: left;        /* word grows rightward, left edge pinned */
+  white-space: nowrap;
+  line-height: 1;
+  vertical-align: baseline;
+}
 
 
  .subtitle {
@@ -762,22 +777,59 @@
 
 
  // ---- "captured by" font swapper ----
- const fonts = [
-   "'Courier New', monospace",
-   "Georgia, serif",
-   "'Brush Script MT', cursive",
-   "'Trebuchet MS', sans-serif",
-   "Impact, sans-serif",
-   "'Palatino Linotype', serif",
-   "'Comic Sans MS', cursive",
-   "Verdana, sans-serif"
- ];
- let fi = 0;
- const superEl = document.getElementById('superFont');
- setInterval(() => {
-   fi = (fi + 1) % fonts.length;
-   superEl.style.fontFamily = fonts[fi];
- }, 250);
+const fonts = [
+  "'Courier New', monospace",
+  "Georgia, serif",
+  "'Brush Script MT', cursive",
+  "'Trebuchet MS', sans-serif",
+  "Impact, sans-serif",
+  "'Palatino Linotype', serif",
+  "'Comic Sans MS', cursive",
+  "Verdana, sans-serif"
+];
+
+const superEl = document.getElementById('superFont');
+const BASE_FONT = "'EB Garamond', Georgia, serif";
+
+function reserveGrapherWidth() {
+  const cs = getComputedStyle(superEl);
+  const probe = document.createElement('span');
+  probe.textContent = superEl.textContent;
+  probe.style.cssText =
+    `position:absolute;left:-9999px;top:0;visibility:hidden;white-space:nowrap;` +
+    `font-size:${cs.fontSize};font-weight:${cs.fontWeight};letter-spacing:${cs.letterSpacing};`;
+  document.body.appendChild(probe);
+
+  let max = 0;
+  [BASE_FONT, ...fonts].forEach(f => {
+    probe.style.fontFamily = f;
+    max = Math.max(max, probe.getBoundingClientRect().width);
+  });
+  probe.remove();
+
+  superEl.style.width = Math.ceil(max) + 'px';
+}
+
+let fi = 0;
+function startSwapping() {
+  setInterval(() => {
+    fi = (fi + 1) % fonts.length;
+    superEl.style.fontFamily = fonts[fi];
+  }, 250);
+}
+
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { reserveGrapherWidth(); startSwapping(); });
+} else {
+  window.addEventListener('load', () => { reserveGrapherWidth(); startSwapping(); });
+}
+
+// font-size is a clamp(), so re-measure when the viewport changes
+let rzT;
+window.addEventListener('resize', () => {
+  clearTimeout(rzT);
+  rzT = setTimeout(reserveGrapherWidth, 150);
+});
 
 
  document.getElementById('year').textContent = new Date().getFullYear();
