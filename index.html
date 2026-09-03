@@ -621,6 +621,47 @@
     .plans { grid-template-columns: 1fr; }
   }
 
+/* ---------- HELLO SLIDESHOW ---------- */
+.slideshow {
+  max-width: 1100px;
+  margin: 0 auto 7rem;
+  padding: 0 2.5rem;
+  text-align: center;
+}
+
+.slide-frame {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #e2e2e2;
+  background: #fafafa;
+  cursor: pointer;
+}
+
+.slide-frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.slide-frame img.showing { opacity: 1; }
+
+.slide-hint {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
 </style>
 </head>
 <body>
@@ -662,6 +703,11 @@
      <p>In this age of AI, let's find a way to create and connect with each other~</p>
    </div>
  </div>
+
+ <div class="slideshow">
+  <div class="slide-frame" id="slideFrame"></div>
+  <div class="slide-hint">click to flip <span id="slideCount"></span></div>
+</div>
 </section>
 
 
@@ -957,6 +1003,48 @@ window.addEventListener('resize', () => {
 
 
  document.querySelector('[data-page="portraits"]').addEventListener('click', closeChapter);
+
+// ---- hello slideshow ----
+const helloPics = [
+  "hello/hello%201.jpg",
+  "hello/hello%202.jpg",
+  "hello/hello%203.jpg",
+  "hello/hello%204.jpg",
+  "hello/hello%206.jpg",
+  "hello/hello%207.jpg",
+  "hello/hello%208.jpg"
+];
+
+
+const slideFrame = document.getElementById('slideFrame');
+const slideCount = document.getElementById('slideCount');
+let slideIndex = 0;
+
+helloPics.forEach((src, i) => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = "hello photo " + (i + 1);
+  if (i === 0) img.classList.add('showing');
+  slideFrame.appendChild(img);
+});
+
+function updateCount() {
+  slideCount.textContent = `(${slideIndex + 1} / ${helloPics.length})`;
+}
+updateCount();
+
+slideFrame.addEventListener('click', () => {
+  const imgs = slideFrame.querySelectorAll('img');
+  imgs[slideIndex].classList.remove('showing');
+  slideIndex = (slideIndex + 1) % helloPics.length;
+  imgs[slideIndex].classList.add('showing');
+  updateCount();
+});
+
+
+
+
+
 </script>
 
 
