@@ -629,38 +629,95 @@
   text-align: center;
 }
 
-.slide-frame {
+.deck-frame {
+  display: inline-block;
+  padding: 2.2rem 3.4rem 3rem 2.2rem;
+  background: #fdfdfd;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+}
+
+.deck {
   position: relative;
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto;
+  width: 640px;
+  max-width: 100%;
   aspect-ratio: 3 / 2;
-  overflow: hidden;
-  border-radius: 4px;
-  border: 1px solid #e2e2e2;
-  background: #fafafa;
   cursor: pointer;
 }
 
-.slide-frame img {
+.deck-card {
   position: absolute;
   inset: 0;
+  background: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  transform-origin: center center;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.3, 1),
+              opacity 0.55s ease,
+              box-shadow 0.55s ease;
+}
+
+.deck-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.45s ease;
+  display: block;
 }
 
-.slide-frame img.showing { opacity: 1; }
+/* the three visible layers of the stack */
+.pos-0 {
+  transform: translate(0, 0) rotate(0deg);
+  z-index: 3;
+  box-shadow: 0 14px 34px rgba(0,0,0,0.20);
+}
+.pos-1 {
+  transform: translate(16px, 12px) rotate(2.2deg);
+  z-index: 2;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+}
+.pos-2 {
+  transform: translate(30px, 23px) rotate(4.4deg);
+  z-index: 1;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+}
+.pos-hidden {
+  transform: translate(30px, 23px) rotate(4.4deg);
+  opacity: 0;
+  z-index: 0;
+}
+
+/* hover: the cards underneath fan out for a sneak peek */
+.deck:hover .pos-0 {
+  transform: translate(-6px, -6px) rotate(-1.2deg);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.24);
+}
+.deck:hover .pos-1 { transform: translate(40px, 18px) rotate(5.5deg); }
+.deck:hover .pos-2 { transform: translate(66px, 34px) rotate(9deg); }
+
+/* the card being flipped away */
+.deck-card.flying {
+  transform: translate(-115%, -8%) rotate(-15deg);
+  opacity: 0;
+  z-index: 5;
+}
+
+/* used for one frame so a card can snap to the back invisibly */
+.deck-card.no-anim { transition: none !important; }
 
 .slide-hint {
-  margin-top: 1rem;
+  margin-top: 1.4rem;
   font-size: 0.95rem;
   font-style: italic;
   color: var(--text-muted);
   letter-spacing: 0.03em;
 }
+
+@media (max-width: 768px) {
+  .deck-frame { padding: 1.4rem 2rem 2rem 1.4rem; }
+  .deck:hover .pos-1 { transform: translate(24px, 15px) rotate(3.5deg); }
+  .deck:hover .pos-2 { transform: translate(42px, 28px) rotate(6deg); }
+}
+
 
 </style>
 </head>
@@ -705,7 +762,9 @@
  </div>
 
  <div class="slideshow">
-  <div class="slide-frame" id="slideFrame"></div>
+  <div class="deck-frame">
+    <div class="deck" id="deck"></div>
+  </div>
   <div class="slide-hint">click to flip <span id="slideCount"></span></div>
 </div>
 </section>
@@ -1015,30 +1074,49 @@ const helloPics = [
   "hello/hello%208.jpg"
 ];
 
-
-const slideFrame = document.getElementById('slideFrame');
+const deck = document.getElementById('deck');
 const slideCount = document.getElementById('slideCount');
-let slideIndex = 0;
+const cards = [];
+let order = [];
+let flipping = false;
 
 helloPics.forEach((src, i) => {
-  const img = document.createElement('img');
-  img.src = src;
-  img.alt = "hello photo " + (i + 1);
-  if (i === 0) img.classList.add('showing');
-  slideFrame.appendChild(img);
+  const card = document.createElement('div');
+  card.className = 'deck-card';
+  card.innerHTML = `<img src="${src}" alt="hello photo ${i + 1}">`;
+  deck.appendChild(card);
+  cards.push(card);
+  order.push(i);
 });
 
-function updateCount() {
-  slideCount.textContent = `(${slideIndex + 1} / ${helloPics.length})`;
+function applyStack(snapEl) {
+  order.forEach((cardIdx, pos) => {
+    const el = cards[cardIdx];
+    let cls = 'deck-card ' + (pos <= 2 ? 'pos-' + pos : 'pos-hidden');
+    if (el === snapEl) cls += ' no-anim';
+    el.className = cls;
+  });
+  if (snapEl) {
+    void snapEl.offsetWidth;      // forces the browser to catch up
+    snapEl.classList.remove('no-anim');
+  }
+  slideCount.textContent = `(${order[0] + 1} / ${helloPics.length})`;
 }
-updateCount();
 
-slideFrame.addEventListener('click', () => {
-  const imgs = slideFrame.querySelectorAll('img');
-  imgs[slideIndex].classList.remove('showing');
-  slideIndex = (slideIndex + 1) % helloPics.length;
-  imgs[slideIndex].classList.add('showing');
-  updateCount();
+applyStack();
+
+deck.addEventListener('click', () => {
+  if (flipping) return;
+  flipping = true;
+
+  const topCard = cards[order[0]];
+  topCard.classList.add('flying');
+
+  setTimeout(() => {
+    order.push(order.shift());   // top card goes to the bottom
+    applyStack(topCard);
+    flipping = false;
+  }, 520);
 });
 
 
