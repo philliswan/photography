@@ -966,17 +966,6 @@
 .grad-arrow.prev:hover { transform: translateY(-50%) translateX(-3px); }
 .grad-arrow.next:hover { transform: translateY(-50%) translateX(3px); }
 
-.cal-embed {
-  margin: 2.5rem 0 3rem;
-}
-
-.cal-embed iframe {
-  width: 100%;
-  height: 720px;
-  border: 1px solid var(--border-light);
-  border-radius: 4px;
-}
-
 .booking-alt {
   font-size: 1.05rem;
   color: var(--text-muted);
@@ -989,10 +978,23 @@
   border-bottom: 1px solid currentColor;
 }
 
-@media (max-width: 768px) {
-  .cal-embed iframe { height: 640px; }
+.book-btn {
+  display: inline-block;
+  margin: 2.5rem 0 3rem;
+  padding: 1rem 2.2rem;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 2px;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
+.book-btn:hover {
+  opacity: 0.82;
+  transform: translateY(-2px);
+}
 
 </style>
 </head>
@@ -1140,13 +1142,7 @@
    <h1>bookings</h1>
    <p>Have a vision in mind? Let's make it real. Pick a time below that works for you, and tell me a little about what you're imagining — I'll follow up to chat about location and creative direction.</p>
 
-   <div class="cal-embed">
-     <iframe
-       src="https://calendar.app.google/7Zbst3Hc2thfSuF87?embed=true"
-       title="book a session with philli.grapher"
-       frameborder="0"
-       scrolling="no"></iframe>
-   </div>
+   <a class="book-btn" href="https://calendar.app.google/7Zbst3Hc2thfSuF87" target="_blank" rel="noopener">check availability &amp; book →</a>
 
    <p class="booking-alt">Something custom in mind, or not sure what you need yet? Email me at <a href="mailto:phillis27@berkeley.edu">phillis27@berkeley.edu</a> and we'll figure it out together.</p>
  </div>
