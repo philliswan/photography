@@ -11,7 +11,84 @@
  :root {
    --text-dark: #1a1a1a;
    --text-muted: #777;
-   --pastel-blue: #4a6fa5;
+   --pastel-blue: #4a6fa5;/* ---------- GRADUATION BANNER ---------- */
+.grad-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #eee;
+  margin-bottom: 4rem;
+}
+
+.grad-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.grad-stage img.showing { opacity: 1; }
+
+.grad-typed {
+  position: absolute;
+  top: 2.2rem;
+  left: 2.6rem;
+  z-index: 2;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.45);
+  white-space: nowrap;
+}
+
+.grad-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  background: #fff;
+  margin-left: 0.08em;
+  vertical-align: -0.08em;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ---------- GRADUATION ABOUT ROW ---------- */
+.grad-about {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  margin-bottom: 5rem;
+}
+
+.deck.vert {
+  width: 300px;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+}
+
+.grad-blurb {
+  flex: 1;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: #2a2a2a;
+}
+
+@media (max-width: 768px) {
+  .grad-about { flex-direction: column; gap: 2rem; }
+  .deck.vert { width: 240px; }
+  .grad-typed { top: 1.2rem; left: 1.3rem; }
+}
    --accent-red: #e23636;
    --border-light: #ececec;
  }
@@ -767,6 +844,85 @@
   .deck:hover .pos-2 { transform: translate(42px, 28px) rotate(6deg); }
 }
 
+/* ---------- GRADUATION BANNER ---------- */
+.grad-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #eee;
+  margin-bottom: 4rem;
+}
+
+.grad-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.grad-stage img.showing { opacity: 1; }
+
+.grad-typed {
+  position: absolute;
+  top: 2.2rem;
+  left: 2.6rem;
+  z-index: 2;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 14px rgba(0,0,0,0.45);
+  white-space: nowrap;
+}
+
+.grad-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  background: #fff;
+  margin-left: 0.08em;
+  vertical-align: -0.08em;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* ---------- GRADUATION ABOUT ROW ---------- */
+.grad-about {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  margin-bottom: 5rem;
+}
+
+.deck.vert {
+  width: 300px;
+  aspect-ratio: 2 / 3;
+  flex-shrink: 0;
+}
+
+.grad-blurb {
+  flex: 1;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: #2a2a2a;
+}
+
+@media (max-width: 768px) {
+  .grad-about { flex-direction: column; gap: 2rem; }
+  .deck.vert { width: 240px; }
+  .grad-typed { top: 1.2rem; left: 1.3rem; }
+}
+
 
 </style>
 </head>
@@ -867,10 +1023,17 @@
 <!-- ============ GRADUATION PAGE ============ -->
 <section id="graduation" class="page">
   <div class="gallery-wrap">
-    <div class="gallery-header">
+
+    <div class="grad-stage" id="gradStage">
+      <div class="grad-typed"><span id="gradType"></span><span class="grad-caret"></span></div>
     </div>
 
-    <img class="grad-banner" src="graduation_banner.png" alt="graduation banner">
+    <div class="grad-about">
+      <div class="deck vert" id="gradDeck"></div>
+      <div class="grad-blurb">
+        The locations that bears the most significance, the feelings that will never fade away, the moments you want to hold onto forever. I hope to capture all of these special moments for you!
+      </div>
+    </div>
 
     <div class="plans">
       <div class="plan-card">
@@ -891,6 +1054,7 @@
         <div class="plan-price">$250<span>/90 min</span></div>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -1189,7 +1353,105 @@ deck.addEventListener('click', () => {
 });
 
 
+// ---- graduation banner rotation ----
+const gradBanners = [
+  "grad/horizontal/gradbanner0.jpg",
+  "grad/horizontal/gradbanner1.jpg",
+  "grad/horizontal/gradbanner2.jpg",
+  "grad/horizontal/gradbanner3.jpg"
+];
 
+const gradStage = document.getElementById('gradStage');
+const bannerEls = [];
+
+gradBanners.forEach((src, i) => {
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = "graduation banner " + (i + 1);
+  if (i === 0) img.classList.add('showing');
+  gradStage.insertBefore(img, gradStage.firstChild);
+  bannerEls.push(img);
+});
+
+let bannerIdx = 0;
+setInterval(() => {
+  bannerEls[bannerIdx].classList.remove('showing');
+  bannerIdx = (bannerIdx + 1) % bannerEls.length;
+  bannerEls[bannerIdx].classList.add('showing');
+}, 1300);
+
+
+// ---- typing animation ----
+const phrases = ["You've made it!!", "Congrats!", "YAYYYYY!"];
+const typeEl = document.getElementById('gradType');
+let pIdx = 0, chIdx = 0, deleting = false;
+
+function typeLoop() {
+  const word = phrases[pIdx];
+  chIdx += deleting ? -1 : 1;
+  typeEl.textContent = word.slice(0, chIdx);
+
+  let wait = deleting ? 55 : 110;
+
+  if (!deleting && chIdx === word.length) {
+    wait = 1400;            // pause on the full phrase
+    deleting = true;
+  } else if (deleting && chIdx === 0) {
+    deleting = false;
+    pIdx = (pIdx + 1) % phrases.length;
+    wait = 350;
+  }
+  setTimeout(typeLoop, wait);
+}
+typeLoop();
+
+
+// ---- graduation vertical deck ----
+const gradPics = [
+  "grad/vertical/vert1.jpg",
+  "grad/vertical/vert2.jpg",
+  "grad/vertical/vert3.jpg"
+];
+
+const gradDeck = document.getElementById('gradDeck');
+const gradCards = [];
+let gradOrder = [];
+let gradFlipping = false;
+
+gradPics.forEach((src, i) => {
+  const card = document.createElement('div');
+  card.className = 'deck-card';
+  card.innerHTML = `<img src="${src}" alt="graduation photo ${i + 1}">`;
+  gradDeck.appendChild(card);
+  gradCards.push(card);
+  gradOrder.push(i);
+});
+
+function gradStack(snapEl) {
+  gradOrder.forEach((cardIdx, pos) => {
+    const el = gradCards[cardIdx];
+    let cls = 'deck-card ' + (pos <= 2 ? 'pos-' + pos : 'pos-hidden');
+    if (el === snapEl) cls += ' no-anim';
+    el.className = cls;
+  });
+  if (snapEl) {
+    void snapEl.offsetWidth;
+    snapEl.classList.remove('no-anim');
+  }
+}
+gradStack();
+
+gradDeck.addEventListener('click', () => {
+  if (gradFlipping) return;
+  gradFlipping = true;
+  const topCard = gradCards[gradOrder[0]];
+  topCard.classList.add('flying');
+  setTimeout(() => {
+    gradOrder.push(gradOrder.shift());
+    gradStack(topCard);
+    gradFlipping = false;
+  }, 520);
+});
 
 
 </script>
