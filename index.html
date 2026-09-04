@@ -73,14 +73,22 @@
 
 .grad-deck-slot {
   flex-shrink: 0;
-  width: 300px;
-  padding-right: 90px;   /* room for the cards to fan out */
+  width: 420px;
+  padding-right: 60px;   /* room for the cards to fan out */
 }
 
 .deck.vert {
-  width: 300px;
+  width: 420px;
   aspect-ratio: 2 / 3;
 }
+
+.deck.vert:hover .pos-0 {
+  transform: translate(-4px, -4px) rotate(0deg);
+  box-shadow: 0 20px 44px rgba(0,0,0,0.22);
+}
+.deck.vert:hover .pos-1 { transform: translate(26px, 14px) rotate(1.4deg); }
+.deck.vert:hover .pos-2 { transform: translate(46px, 26px) rotate(2.6deg); }
+
 
 .grad-blurb {
   flex: 1;
@@ -1065,12 +1073,13 @@
     </div>
 
     <div class="grad-about">
-    <div class="grad-deck-slot">
-    <div class="deck vert" id="gradDeck"></div>
-   </div>
-   <div class="grad-blurb">
+    <div class="grad-blurb">
     The locations that bears the most significance, the feelings that will never fade away, the moments you want to hold onto forever. I hope to capture all of these special moments for you!
     </div>
+    <div class="grad-deck-slot">
+    <div class="deck vert" id="gradDeck"></div>
+  </div>
+</div>
 </div>
 
     <div class="plans">
