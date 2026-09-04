@@ -71,10 +71,15 @@
   margin-bottom: 5rem;
 }
 
+.grad-deck-slot {
+  flex-shrink: 0;
+  width: 300px;
+  padding-right: 90px;   /* room for the cards to fan out */
+}
+
 .deck.vert {
   width: 300px;
   aspect-ratio: 2 / 3;
-  flex-shrink: 0;
 }
 
 .grad-blurb {
@@ -923,6 +928,35 @@
   .grad-typed { top: 1.2rem; left: 1.3rem; }
 }
 
+/* banner arrows */
+.grad-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.82);
+  color: #1a1a1a;
+  font-family: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.65;
+  transition: opacity 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.grad-stage:hover .grad-arrow { opacity: 1; }
+.grad-arrow:hover { background: #fff; }
+.grad-arrow.prev { left: 1.2rem; }
+.grad-arrow.next { right: 1.2rem; }
+.grad-arrow.prev:hover { transform: translateY(-50%) translateX(-3px); }
+.grad-arrow.next:hover { transform: translateY(-50%) translateX(3px); }
 
 </style>
 </head>
@@ -1025,15 +1059,19 @@
   <div class="gallery-wrap">
 
     <div class="grad-stage" id="gradStage">
-      <div class="grad-typed"><span id="gradType"></span><span class="grad-caret"></span></div>
+    <button class="grad-arrow prev" id="gradPrev" aria-label="previous photo">‹</button>
+    <button class="grad-arrow next" id="gradNext" aria-label="next photo">›</button>
+    <div class="grad-typed"><span id="gradType"></span><span class="grad-caret"></span></div>
     </div>
 
     <div class="grad-about">
-      <div class="deck vert" id="gradDeck"></div>
-      <div class="grad-blurb">
-        The locations that bears the most significance, the feelings that will never fade away, the moments you want to hold onto forever. I hope to capture all of these special moments for you!
-      </div>
+    <div class="grad-deck-slot">
+    <div class="deck vert" id="gradDeck"></div>
+   </div>
+   <div class="grad-blurb">
+    The locations that bears the most significance, the feelings that will never fade away, the moments you want to hold onto forever. I hope to capture all of these special moments for you!
     </div>
+</div>
 
     <div class="plans">
       <div class="plan-card">
@@ -1374,11 +1412,15 @@ gradBanners.forEach((src, i) => {
 });
 
 let bannerIdx = 0;
-setInterval(() => {
+
+function showBanner(n) {
   bannerEls[bannerIdx].classList.remove('showing');
-  bannerIdx = (bannerIdx + 1) % bannerEls.length;
+  bannerIdx = (n + bannerEls.length) % bannerEls.length;
   bannerEls[bannerIdx].classList.add('showing');
-}, 1300);
+}
+
+document.getElementById('gradPrev').addEventListener('click', () => showBanner(bannerIdx - 1));
+document.getElementById('gradNext').addEventListener('click', () => showBanner(bannerIdx + 1));
 
 
 // ---- typing animation ----
@@ -1408,9 +1450,13 @@ typeLoop();
 
 // ---- graduation vertical deck ----
 const gradPics = [
-  "grad/vertical/vert1.jpg",
-  "grad/vertical/vert2.jpg",
-  "grad/vertical/vert3.jpg"
+  "grad/vertical/grad1.jpg",
+  "grad/vertical/grad2.jpg",
+  "grad/vertical/grad3.jpg",
+  "grad/vertical/grad4.jpg",
+  "grad/vertical/grad5.jpg",
+  "grad/vertical/grad6.jpg",
+  "grad/vertical/grad8.jpg"
 ];
 
 const gradDeck = document.getElementById('gradDeck');
