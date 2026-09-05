@@ -996,6 +996,46 @@
   transform: translateY(-2px);
 }
 
+/* portrait photos with text beside them */
+.story-block.img-left,
+.story-block.img-right {
+  flex-direction: row;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+.story-block.img-right { flex-direction: row-reverse; }
+
+.story-block.img-left img,
+.story-block.img-right img {
+  width: 44%;
+  flex-shrink: 0;
+}
+
+.story-block.img-left .story-text,
+.story-block.img-right .story-text {
+  flex: 1;
+  margin: 0;
+  max-width: none;
+}
+
+.chapter-empty {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 3rem 0;
+}
+
+@media (max-width: 768px) {
+  .story-block.img-left,
+  .story-block.img-right {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .story-block.img-left img,
+  .story-block.img-right img { width: 100%; }
+}
+
 </style>
 </head>
 <body>
@@ -1240,38 +1280,25 @@ window.addEventListener('resize', () => {
         { img: "chapters/ch1/ch1_4.jpg", text: `Back on the Emeryville shoreline, I press the shutter as the sun immerses the world in its soft golden hour light. I had no idea of how composition worked at that time, so I circled around her until the little world through the eyepiece looked magical in my eyes.\n\nIt was my first time being a photographer, and her first time being a model.` },
         { img: "chapters/ch1/ch1_5.jpg", text: `Until the sun drowned into the ocean and the icy cold summer Bay Area wind hit us with its currents, we hurried indoors for some quick food. I think we still got icecream anyways. The pure joy of hanging out with friends, the laughter all along the way, they still reverberate off of the bus routes and streets.` },
         { img: "chapters/ch1/ch1_6.jpg", text: `On this trip, I purposefully brought along a little stool so that I can take pictures while she is sitting, or stand on the stool if needed. Compensating for our height differences SMH.\n\nWhen we curse each other now, it becomes:\n\n"You ceiling licker!"\n"Ankle biter!"` }
-      ],
-      photos: [] },
+      ] },
+
    { date: "Feb 2024", title: "Chapter 2", caption: "Escape in the Spring.", cover: "chapters/chapcovers/ch2_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Mar 2024", title: "Chapter 3", caption: "Roses by the sea.", cover: "chapters/chapcovers/ch3_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Apr 2024", title: "Chapter 4", caption: "Dear Rose.", cover: "chapters/chapcovers/ch4_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80"] },
-   { date: "May 2024", title: "Chapter 5", caption: "Eye of the flower.", cover: "chapters/chapcovers/ch5_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Jun 2024", title: "Chapter 6", caption: "Learning to see the in-between.", cover: "chapters/chapcovers/ch6_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80","https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Jul 2024", title: "Chapter 7", caption: "Summer warmth in every frame.", cover: "chapters/chapcovers/ch7_cover.jpg",
-     photos: ["https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Aug 2024", title: "Chapter 8", caption: "Chasing shadows downtown.", cover: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Sep 2024", title: "Chapter 9", caption: "Autumn tones and tender pauses.", cover: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Oct 2024", title: "Chapter 10", caption: "Crisp air, candid laughter.", cover: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Nov 2024", title: "Chapter 11", caption: "Quiet mornings, long exposures.", cover: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Dec 2024", title: "Chapter 12", caption: "Winter light, lingering glow.", cover: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Jan 2025", title: "Chapter 13", caption: "A new year through the lens.", cover: "https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Feb 2025", title: "Chapter 14", caption: "Bolder frames, braver choices.", cover: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"] },
-   { date: "Mar 2025", title: "Chapter 15", caption: "Still learning, still in love with it.", cover: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80",
-     photos: ["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80"] }
+      story: [
+        { img: "chapters/ch2/ch2_1.jpg", text: `Before I invested in a digital camera, I took pictures of my friends on my phone. I've always enjoyed taking pictures of other people and have the "OMG IT LOOKS SO GOOD" glisten in their eyes as they look at my pictures. At that time, I never thought I'll get super real with photography, I simply wanted to improve my phone-picture-taking skills. With the beginner not-even-photographer mindset, I posted on insta asking if anyone wants to model and get some free pics, and Karen commented that she would be down!\n\nI met Karen in one of the breadth classes that I took, and we were in the same final project group. It was a theatres class which I had no interest in (sorry if this offends anyone), and after I filmed the dancing video for the final project, we all had food together and exchanged our social media. Karen and I have only met once, so I was pleasantly honored and surprised that she had liked my pictures and would be down to model for me.` },
+        { img: "chapters/ch2/ch2_2.jpg", layout: "img-left", text: `So when summer rolled around and I got my hands on an actual camera, I had to ask her for a shoot!\n\nThis was my first shoot for a semi-stranger, and I took it very seriously. We met up the day before to plan out outfits, props, and style that we wanted to try. She wanted a lively and vibrant aesthestic, and her only requirement was:\n\nShe must touch grass!` },
+        { img: "chapters/ch2/ch2_3.jpg", layout: "img-right", text: `It's funny to think back because I didn't have a proper portrait lens at that time yet. I was using the basic kit lens that came with my newly bought camera, the 24-55mm which roughly corresponds to 1.2x to 2x zoom on a phone. I have not yet understand the power of f2.8.\n\nBut I didn't care.\n\nI believed that as long as I have the right vision and framing, I would still be able to produce a masterpiece.` },
+        { img: "chapters/ch2/ch2_4.jpg", text: `And to be honest, even up until now, I was pretty happy with the pictures I took! And so was Karen.\n\nWe took pictures until she got tired after about 90 minutes, and after putting props away, we ate food together at Kimchi Garden and just talked about random stuff for a while. Then she came over to choose the pictures we took together, and went back home happily with happy memories.\n\nI guess we must have exchanged BeReals at the shoot, because I still see her post on there pretty often. She's a year above me, so when I was receiving those Asia-travel BeReals while I was stuck studying in the fricking underground library with no window, I was actually like tweaking out–` },
+        { img: "chapters/ch2/ch2_5.jpg", text: `It was great meeting Karen.\n\nAlthough I'm not sure if our paths would cross again, her pictures has left a lasting trace in my photography journey.` }
+      ] },
+
+   { date: "Mar 2024", title: "Chapter 3", caption: "Roses by the sea.", cover: "chapters/chapcovers/ch3_cover.jpg" },
+   { date: "Apr 2024", title: "Chapter 4", caption: "Dear Rose.", cover: "chapters/chapcovers/ch4_cover.jpg" },
+   { date: "May 2024", title: "Chapter 5", caption: "Eye of the flower.", cover: "chapters/chapcovers/ch5_cover.jpg" },
+   { date: "Jun 2024", title: "Chapter 6", caption: "Learning to see the in-between.", cover: "chapters/chapcovers/ch6_cover.jpg" },
+   { date: "Jul 2024", title: "Chapter 7", caption: "Summer warmth in every frame.", cover: "chapters/chapcovers/ch7_cover.jpg" }
  ];
 
+ // remove this line once every chapter has a story written
 
  const timeline = document.querySelector('.timeline');
  const chapterOverview = document.querySelector('.chapter-overview');
@@ -1309,24 +1336,22 @@ window.addEventListener('resize', () => {
 
     let body;
     if (ch.story && ch.story.length) {
-      // Narrative layout: alternating image + text blocks
       body = `
         <div class="chapter-story">
-          ${ch.story.map((block, idx) => `
-            <div class="story-block ${idx % 2 === 0 ? 'img-left' : 'img-right'}">
-              <img src="${block.img}" alt="${ch.title} photo ${idx + 1}">
-              <div class="story-text">
-                ${block.text.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}
-              </div>
-            </div>
-          `).join('')}
+          ${ch.story.map((block, idx) => {
+            const layout = block.layout || 'full';
+            const textHtml = block.text
+              ? `<div class="story-text">${block.text.split('\n\n').map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}</div>`
+              : '';
+            return `
+              <div class="story-block ${layout}">
+                <img src="${block.img}" alt="${ch.title} photo ${idx + 1}" loading="lazy">
+                ${textHtml}
+              </div>`;
+          }).join('')}
         </div>`;
     } else {
-      // Fallback grid layout for other chapters
-      body = `
-        <div class="grid">
-          ${ch.photos.map(p => `<img src="${p}" alt="${ch.title} photo">`).join('')}
-        </div>`;
+      body = `<p class="chapter-empty">this chapter is still being written~ check back soon!</p>`;
     }
 
     detailContainer.innerHTML = `
