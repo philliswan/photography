@@ -1085,8 +1085,6 @@
   bottom: 1.6rem;
   z-index: 2;
   padding: 4rem 3rem 0.5rem 1.2rem;
-  border-left: 5px solid #fff;
-  border-bottom: 5px solid #fff;
   color: #fff;
   font-family: 'Oswald', sans-serif;
   font-weight: 600;
@@ -1096,6 +1094,49 @@
   line-height: 1;
   pointer-events: none;
 }
+
+/* vertical line: draws from top to bottom */
+.event-label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: #fff;
+  transform: scaleY(0);
+  transform-origin: top;
+  opacity: 0;
+  transition: transform 0.7s ease, opacity 0.7s ease;
+}
+
+/* bottom line: continues from the corner, left to right */
+.event-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5px;
+  background: #fff;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: transform 0.5s ease 0.6s, opacity 0.5s ease 0.6s;
+}
+
+/* the word fades in gently */
+.event-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s;
+}
+
+/* when the banner scrolls into view, everything appears */
+.event-banner.in-view .event-label::before { transform: scaleY(1); opacity: 1; }
+.event-banner.in-view .event-label::after  { transform: scaleX(1); opacity: 1; }
+.event-banner.in-view .event-word          { opacity: 1; transform: translateY(0); }
 
 .event-dots {
   position: absolute;
@@ -1145,7 +1186,9 @@
 
 @media (max-width: 768px) {
   .event-banner { aspect-ratio: 4 / 3; }
-  .event-label { left: 1rem; bottom: 1rem; padding: 2.5rem 1.8rem 0.4rem 0.9rem; border-width: 4px; }
+  .event-label { left: 1rem; bottom: 1rem; padding: 2.5rem 1.8rem 0.4rem 0.9rem; }
+  .event-label::before { width: 4px; }
+  .event-label::after { height: 4px; }
   .event-dots { left: auto; right: 1.2rem; transform: none; }
 }
 </style>
@@ -1721,7 +1764,7 @@ eventSets.forEach(set => {
 
   const label = document.createElement('div');
   label.className = 'event-label';
-  label.textContent = set.label;
+  label.innerHTML = `<span class="event-word">${set.label}</span>`;
   banner.appendChild(label);
 
   const dotWrap = document.createElement('div');
@@ -1751,6 +1794,17 @@ eventSets.forEach(set => {
   banner.addEventListener('click', () => go(current + 1));
 
   eventsList.appendChild(banner);
+  // reveal each banner's label as it scrolls into view
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);   // only animate once
+    }
+  });
+}, { threshold: 0.4 });
+
+document.querySelectorAll('.event-banner').forEach(b => revealObserver.observe(b));
 });
 </script>
 
