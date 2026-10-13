@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&display=swap" rel="stylesheet">
 <style>
  :root {
    --text-dark: #1a1a1a;
@@ -1036,6 +1037,117 @@
   .story-block.img-right img { width: 100%; }
 }
 
+/* ---------- EVENTS ---------- */
+.events-heading {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  letter-spacing: 0.01em;
+  margin-bottom: 2rem;
+}
+
+.event-banner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+  background: #eee;
+  cursor: pointer;
+}
+
+.event-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.event-banner img.showing { opacity: 1; }
+
+/* soft dark fade at the bottom so the white label stays readable */
+.event-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.45), transparent 55%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.event-label {
+  position: absolute;
+  left: 1.6rem;
+  bottom: 1.6rem;
+  z-index: 2;
+  padding: 4rem 3rem 0.5rem 1.2rem;
+  border-left: 5px solid #fff;
+  border-bottom: 5px solid #fff;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.event-dots {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6rem;
+  z-index: 3;
+}
+
+.event-dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.event-dot:hover { background: rgba(255,255,255,0.85); }
+.event-dot.active { background: #fff; transform: scale(1.3); }
+
+.events-clients {
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #2a2a2a;
+  max-width: 680px;
+  margin: 4rem auto 1.2rem;
+}
+
+.events-contact {
+  text-align: center;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.events-contact a {
+  color: var(--pastel-blue);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+@media (max-width: 768px) {
+  .event-banner { aspect-ratio: 4 / 3; }
+  .event-label { left: 1rem; bottom: 1rem; padding: 2.5rem 1.8rem 0.4rem 0.9rem; border-width: 4px; }
+  .event-dots { left: auto; right: 1.2rem; transform: none; }
+}
 </style>
 </head>
 <body>
@@ -1045,6 +1157,7 @@
  <a class="nav-link active" data-page="hello">hello~</a>
  <a class="nav-link" data-page="portraits">portraits</a>
  <a class="nav-link" data-page="graduation">graduation</a>
+ <a class="nav-link" data-page="events">events</a>
  <a class="nav-link" data-page="bookings">bookings</a>
 </nav>
 
@@ -1175,6 +1288,17 @@
   </div>
 </section>
 
+<!-- ============ EVENTS PAGE ============ -->
+<section id="events" class="page">
+  <div class="gallery-wrap">
+    <h1 class="events-heading">I capture events. My pictures are...</h1>
+
+    <div id="eventsList"></div>
+
+    <p class="events-clients">My clients include Adobe, Cal Hackathon, Institute of Human Developments, and others.</p>
+    <p class="events-contact">What's your vibe? Let me know at <a href="mailto:philli.grapher@gmail.com">philli.grapher@gmail.com</a></p>
+  </div>
+</section>
 
 <!-- ============ BOOKINGS PAGE ============ -->
 <section id="bookings" class="page">
@@ -1572,7 +1696,62 @@ gradDeck.addEventListener('click', () => {
   }, 520);
 });
 
+// ---- events banners ----
+const eventSets = [
+  { label: "professional", pics: ["capitalism/prof1.jpg", "capitalism/prof2.jpg", "capitalism/prof3.jpg", "capitalism/prof4.jpg"] },
+  { label: "vibrant",      pics: ["capitalism/vib1.jpg",  "capitalism/vib2.jpg",  "capitalism/vib3.jpg",  "capitalism/vib4.jpg"] },
+  { label: "intimate",     pics: ["capitalism/int1.jpg",  "capitalism/int2.jpg",  "capitalism/int3.jpg",  "capitalism/int4.jpg"] },
+  { label: "authentic",    pics: ["capitalism/auth1.jpg", "capitalism/auth2.jpg", "capitalism/auth3.jpg", "capitalism/auth4.jpg"] }
+];
 
+const eventsList = document.getElementById('eventsList');
+
+eventSets.forEach(set => {
+  const banner = document.createElement('div');
+  banner.className = 'event-banner';
+
+  const imgs = set.pics.map((src, i) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = `${set.label} event photo ${i + 1}`;
+    if (i === 0) img.classList.add('showing');
+    banner.appendChild(img);
+    return img;
+  });
+
+  const label = document.createElement('div');
+  label.className = 'event-label';
+  label.textContent = set.label;
+  banner.appendChild(label);
+
+  const dotWrap = document.createElement('div');
+  dotWrap.className = 'event-dots';
+  banner.appendChild(dotWrap);
+
+  let current = 0;
+
+  function go(n) {
+    imgs[current].classList.remove('showing');
+    dots[current].classList.remove('active');
+    current = (n + imgs.length) % imgs.length;
+    imgs[current].classList.add('showing');
+    dots[current].classList.add('active');
+  }
+
+  const dots = imgs.map((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'event-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `show ${set.label} photo ${i + 1}`);
+    d.addEventListener('click', e => { e.stopPropagation(); go(i); });
+    dotWrap.appendChild(d);
+    return d;
+  });
+
+  // clicking anywhere on the photo also moves to the next one
+  banner.addEventListener('click', () => go(current + 1));
+
+  eventsList.appendChild(banner);
+});
 </script>
 
 
